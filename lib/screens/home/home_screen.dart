@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/constants/colors.dart';
+import '../../core/providers/recipe_provider.dart';
 import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/common/soothing_button.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ingredientsController = useTextEditingController();
+    final recipeState = ref.watch(recipeControllerProvider);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -36,7 +42,8 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              const CustomTextField(
+              CustomTextField(
+                controller: ingredientsController,
                 hintText: 'Enter ingredients (e.g. Avocado, Salmon...)',
                 prefixIcon: LucideIcons.search,
               ),
@@ -71,17 +78,52 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(32),
                         image: const DecorationImage(
-                          image: NetworkImage('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000'),
+                          image: NetworkImage(
+                              'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000'),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                     const SizedBox(height: 40),
-                    SoothingButton(
-                      text: 'Find Recipes',
-                      icon: LucideIcons.chefHat,
-                      onPressed: () => context.push('/results'),
-                    ),
+                    if (recipeState.isLoading)
+                      const CircularProgressIndicator(
+                          color: AppColors.primarySage)
+                    else
+                      SoothingButton(
+                        text: 'Find Recipes',
+                        icon: LucideIcons.chefHat,
+                        onPressed: () {
+                          if (ingredientsController.text.trim().isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Please enter some ingredients')),
+                            );
+                            return;
+                          }
+
+                          final ingredients = ingredientsController.text
+                              .split(',')
+                              .map((e) => e.trim())
+                              .where((e) => e.isNotEmpty)
+                              .toList();
+
+                          if (ingredients.isEmpty) return;
+
+                          ref
+                              .read(recipeControllerProvider.notifier)
+                              .generateRecipe(
+                            ingredients,
+                            onSuccess: () {
+                              context.push('/results');
+                            },
+                            onError: (error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Error: $error')),
+                              );
+                            },
+                          );
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -109,7 +151,9 @@ class HomeScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
-            color: isSelected ? AppColors.primarySage : Colors.black.withOpacity(0.05),
+            color: isSelected
+                ? AppColors.primarySage
+                : Colors.black.withOpacity(0.05),
           ),
         ),
       ),
