@@ -239,8 +239,24 @@ function addToGoal(id) {
 }
 
 function addNewGoal() {
-    const name = prompt("Goal name (e.g., Summer Trip):");
-    const target = prompt("Target amount (₹):");
+    toggleGoalModal(true);
+}
+
+function toggleGoalModal(show) {
+    const modal = document.getElementById('goalModal');
+    if (modal) {
+        modal.style.display = show ? 'flex' : 'none';
+        if (show) {
+            document.getElementById('goalNameInput').focus();
+        }
+    }
+}
+
+function handleGoalFormSubmit(event) {
+    event.preventDefault();
+    const name = document.getElementById('goalNameInput').value;
+    const target = document.getElementById('goalTargetInput').value;
+
     if (name && target && !isNaN(target)) {
         financialGoals.push({
             id: Date.now(),
@@ -250,6 +266,8 @@ function addNewGoal() {
             color: 'var(--primary)'
         });
         saveData();
+        toggleGoalModal(false);
+        event.target.reset();
     }
 }
 
