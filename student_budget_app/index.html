@@ -286,12 +286,15 @@
                         <h2 class="card-title" style="margin-bottom: 2rem;">Account Settings</h2>
                         <div
                             style="padding-bottom: 2rem; border-bottom: 1px solid var(--glass-border); margin-bottom: 2rem;">
-                            <p style="color: var(--text-muted); margin-bottom: 1rem;">Manage your profile, currency
-                                preferences (set to ₹), and
-                                security.</p>
-                            <button class="primary-btn"
-                                style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--glass-border);">Update
-                                Profile</button>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem;">Personalize your experience by
+                                setting your name.</p>
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                                <input type="text" id="userNameInput" placeholder="Enter your name"
+                                    style="padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 12px; color: white; flex: 1;">
+                                <button class="primary-btn"
+                                    onclick="updateUserName(document.getElementById('userNameInput').value)">Update
+                                    Name</button>
+                            </div>
                         </div>
 
                         <div>

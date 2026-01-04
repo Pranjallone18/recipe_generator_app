@@ -63,10 +63,13 @@ let financialGoals = getInitialData('financial_goals', [
     { id: 2, name: 'Emergency Fund', target: 25000, current: 10500, color: 'var(--primary)' }
 ]);
 
+let userName = localStorage.getItem('budget_user_name') || 'Student';
+
 function saveData() {
     localStorage.setItem('budget_transactions', JSON.stringify(transactions));
     localStorage.setItem('budget_limits', JSON.stringify(budgetLimits));
     localStorage.setItem('financial_goals', JSON.stringify(financialGoals));
+    localStorage.setItem('budget_user_name', userName);
     updateUI();
 }
 
@@ -198,6 +201,11 @@ function updateUI() {
     document.querySelectorAll('.stat-value')[1].textContent = `₹${totalIncome.toLocaleString()}`;
     document.querySelectorAll('.stat-value')[2].textContent = `₹${totalSpent.toLocaleString()}`;
 
+    // Update Profile / Greeting
+    document.querySelector('.welcome-text h1').textContent = `Hello, ${userName}! 👋`;
+    const initials = userName === 'Student' ? 'ST' : userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    document.querySelector('.user-profile div').textContent = initials;
+
     // Update Health Score
     updateHealthScore(totalSpent, totalIncome);
 
@@ -291,6 +299,14 @@ function removeGoal(id) {
     if (confirm("Delete this goal?")) {
         financialGoals = financialGoals.filter(g => g.id !== id);
         saveData();
+    }
+}
+
+function updateUserName(newName) {
+    if (newName && newName.trim() !== "") {
+        userName = newName.trim();
+        saveData();
+        alert("Profile name updated to " + userName + "!");
     }
 }
 
