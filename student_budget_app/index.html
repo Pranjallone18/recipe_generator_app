@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BudgetCap | Smart Student Budgeting</title>
+    <meta name="description" content="Master your finances with BudgetCap - the ultimate student budget tracker.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="app-layout">
+            <!-- Sidebar -->
+            <aside class="animate-fade">
+                <div class="logo-container">
+                    <img src="budget_app_logo.png" alt="BudgetCap Logo">
+                    <span class="logo-text">BudgetCap</span>
+                </div>
+                
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                        <li><a href="#"><i data-lucide="wallet"></i> Transactions</a></li>
+                        <li><a href="#"><i data-lucide="pie-chart"></i> Budgets</a></li>
+                        <li><a href="#"><i data-lucide="target"></i> Goals</a></li>
+                        <li><a href="#"><i data-lucide="settings"></i> Settings</a></li>
+                    </ul>
+                </nav>
+                
+                <div style="margin-top: auto;">
+                    <button class="primary-btn" style="width: 100%;">
+                        <i data-lucide="plus-circle" style="display: inline; vertical-align: middle; margin-right: 8px;"></i>
+                        Add Expense
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <header class="animate-fade">
+                    <div class="welcome-text">
+                        <h1>Hello, Student! 👋</h1>
+                        <p class="date" id="currentDate">January 4, 2026</p>
+                    </div>
+                    <div class="user-profile">
+                        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                            PL
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Stats Overview -->
+                <div class="stats-grid animate-fade" style="animation-delay: 0.1s;">
+                    <div class="stat-card">
+                        <h3>Total Balance</h3>
+                        <div class="stat-value">$2,450.80</div>
+                        <div class="stat-change plus">+12% from last month</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Monthly Income</h3>
+                        <div class="stat-value">$1,200.00</div>
+                        <div class="stat-change text-muted">Stipend & Part-time</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Spent</h3>
+                        <div class="stat-value">$840.20</div>
+                        <div class="stat-change minus">-5% under budget</div>
+                    </div>
+                </div>
+
+                <!-- Main Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Spending Chart -->
+                    <div class="card animate-fade" style="animation-delay: 0.2s;">
+                        <div class="card-header">
+                            <h2 class="card-title">Spending Overview</h2>
+                            <select style="background: transparent; color: white; border: 1px solid var(--glass-border); border-radius: 8px; padding: 4px 8px;">
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                            </select>
+                        </div>
+                        <canvas id="spendingChart" height="250"></canvas>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="card animate-fade" style="animation-delay: 0.3s;">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Activity</h2>
+                            <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.8rem;">View All</a>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="transaction-item">
+                                <div class="tx-info">
+                                    <div class="tx-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                                        <i data-lucide="coffee"></i>
+                                    </div>
+                                    <div>
+                                        <div class="tx-name">Starbucks Coffee</div>
+                                        <div class="tx-date">Today, 10:24 AM</div>
+                                    </div>
+                                </div>
+                                <div class="tx-amount" style="color: var(--danger);">-$5.50</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="tx-info">
+                                    <div class="tx-icon" style="background: rgba(34, 197, 94, 0.1); color: var(--success);">
+                                        <i data-lucide="arrow-down-left"></i>
+                                    </div>
+                                    <div>
+                                        <div class="tx-name">Freelance Payout</div>
+                                        <div class="tx-date">Yesterday, 4:15 PM</div>
+                                    </div>
+                                </div>
+                                <div class="tx-amount" style="color: var(--success);">+$250.00</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="tx-info">
+                                    <div class="tx-icon" style="background: rgba(99, 102, 241, 0.1); color: var(--primary);">
+                                        <i data-lucide="shopping-cart"></i>
+                                    </div>
+                                    <div>
+                                        <div class="tx-name">Amazon - Books</div>
+                                        <div class="tx-date">2 Jan, 2026</div>
+                                    </div>
+                                </div>
+                                <div class="tx-amount" style="color: var(--danger);">-$42.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Budget Goals -->
+                <div class="card animate-fade" style="animation-delay: 0.4s;">
+                    <div class="card-header">
+                        <h2 class="card-title">Budget Categories</h2>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div class="budget-progress">
+                            <div class="progress-info">
+                                <span>Food & Drinks</span>
+                                <span>$300 / $500</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="progress-info">
+                                <span>Transport</span>
+                                <span>$85 / $100</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%; background: var(--warning);"></div>
+                            </div>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="progress-info">
+                                <span>Entertainment</span>
+                                <span>$120 / $150</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="progress-info">
+                                <span>Rent</span>
+                                <span>$800 / $800</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%; background: var(--success);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Move the logo image to the correct directory -->
+    <script src="script.js"></script>
+    <script>
+        // Initialize icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
