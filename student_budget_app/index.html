@@ -72,8 +72,43 @@
 
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="page-section">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="card animate-fade"
+                            style="display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(192, 132, 252, 0.2));">
+                            <div>
+                                <h2 style="margin-bottom: 0.5rem;">Smart Insights 🤖</h2>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Our AI
+                                    analyzed your spending habits.</p>
+                                <button class="primary-btn" onclick="getAIInsight()"
+                                    style="background: white; color: var(--primary); padding: 0.6rem 1.2rem;">View
+                                    Suggestion</button>
+                            </div>
+                            <div class="score-container" style="text-align: center;">
+                                <div class="score-circle"
+                                    style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; margin: 0 auto;">
+                                    <span id="healthScoreValue"
+                                        style="font-weight: 800; font-size: 1.2rem; z-index: 1;">85%</span>
+                                    <div
+                                        style="position: absolute; width: 66px; height: 66px; background: var(--bg-dark); border-radius: 50%;">
+                                    </div>
+                                </div>
+                                <p
+                                    style="font-size: 0.7rem; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px;">
+                                    Budget Score</p>
+                            </div>
+                        </div>
+                        <div class="card animate-fade"
+                            style="background: rgba(34, 197, 94, 0.1); display: flex; flex-direction: column; justify-content: center; border: 1px solid rgba(34, 197, 94, 0.2);">
+                            <h3 style="font-size: 0.9rem; color: var(--success); margin-bottom: 0.5rem;"><i
+                                    data-lucide="trending-up"
+                                    style="width: 16px; display: inline; vertical-align: middle;"></i> Savings Challenge
+                            </h3>
+                            <p style="font-size: 0.8rem;">You saved <b>₹420</b> more this week than last week! 🎉</p>
+                        </div>
+                    </div>
+
                     <!-- Stats Overview -->
-                    <div class="stats-grid animate-fade" style="padding-top: 1rem;">
+                    <div class="stats-grid animate-fade">
                         <div class="stat-card">
                             <h3>Total Balance</h3>
                             <div class="stat-value">₹24,500.80</div>
