@@ -48,9 +48,15 @@ let budgetLimits = JSON.parse(localStorage.getItem('budget_limits')) || {
     'Other': 2000
 };
 
+let financialGoals = JSON.parse(localStorage.getItem('financial_goals')) || [
+    { id: 1, name: 'New Laptop', target: 60000, current: 45000, color: 'var(--success)' },
+    { id: 2, name: 'Emergency Fund', target: 25000, current: 10500, color: 'var(--primary)' }
+];
+
 function saveData() {
     localStorage.setItem('budget_transactions', JSON.stringify(transactions));
     localStorage.setItem('budget_limits', JSON.stringify(budgetLimits));
+    localStorage.setItem('financial_goals', JSON.stringify(financialGoals));
     updateUI();
 }
 
@@ -186,7 +192,72 @@ function updateUI() {
     // Update Planner Section
     renderBudgets(categoryTotals);
 
+    // Update Goals Section
+    renderGoals();
+
     lucide.createIcons();
+}
+
+function renderGoals() {
+    const goalsGrid = document.getElementById('goalsGrid');
+    if (!goalsGrid) return;
+
+    goalsGrid.innerHTML = '';
+    financialGoals.forEach(goal => {
+        const percent = Math.min(100, (goal.current / goal.target) * 100);
+        goalsGrid.innerHTML += `
+            <div class="stat-card animate-fade">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <h3 style="color: var(--text-main); font-size: 1.1rem;">${goal.name}</h3>
+                    <button onclick="removeGoal(${goal.id})" style="background:none; border:none; color:var(--danger); cursor:pointer;"><i data-lucide="trash-2" style="width:16px;"></i></button>
+                </div>
+                <div class="stat-value" style="font-size: 1.4rem; margin-bottom: 1rem;">
+                    ₹${goal.current.toLocaleString()} <span style="font-size: 0.9rem; color: var(--text-muted);">/ ₹${goal.target.toLocaleString()}</span>
+                </div>
+                <div class="progress-bar" style="margin-bottom: 1.5rem; height: 10px;">
+                    <div class="progress-fill" style="width: ${percent}%; background: ${goal.color};"></div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="number" placeholder="Add ₹" id="addGoal-${goal.id}" style="flex: 1; padding: 6px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: white; font-size: 0.8rem;">
+                    <button class="primary-btn" onclick="addToGoal(${goal.id})" style="padding: 6px 12px; font-size: 0.8rem;">Add</button>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function addToGoal(id) {
+    const input = document.getElementById(`addGoal-${id}`);
+    const amount = parseFloat(input.value);
+    if (amount && !isNaN(amount)) {
+        const goal = financialGoals.find(g => g.id === id);
+        if (goal) {
+            goal.current += amount;
+            saveData();
+        }
+    }
+}
+
+function addNewGoal() {
+    const name = prompt("Goal name (e.g., Summer Trip):");
+    const target = prompt("Target amount (₹):");
+    if (name && target && !isNaN(target)) {
+        financialGoals.push({
+            id: Date.now(),
+            name: name,
+            target: parseFloat(target),
+            current: 0,
+            color: 'var(--primary)'
+        });
+        saveData();
+    }
+}
+
+function removeGoal(id) {
+    if (confirm("Delete this goal?")) {
+        financialGoals = financialGoals.filter(g => g.id !== id);
+        saveData();
+    }
 }
 
 function renderDashboardBudgets(totals) {
