@@ -21,7 +21,7 @@
 body {
     font-family: var(--font-family);
     background-color: var(--bg-dark);
-    background-image: 
+    background-image:
         radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
     color: var(--text-main);
@@ -74,6 +74,7 @@ aside {
     font-weight: 800;
     background: linear-gradient(to right, #818cf8, #c084fc);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -96,7 +97,8 @@ nav a {
     transition: all 0.3s ease;
 }
 
-nav a:hover, nav a.active {
+nav a:hover,
+nav a.active {
     background: rgba(99, 102, 241, 0.1);
     color: var(--primary);
 }
@@ -159,14 +161,20 @@ header {
     margin-top: 0.5rem;
 }
 
-.stat-change.plus { color: var(--success); }
-.stat-change.minus { color: var(--danger); }
+.stat-change.plus {
+    color: var(--success);
+}
+
+.stat-change.minus {
+    color: var(--danger);
+}
 
 /* Charts & Lists */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+    align-items: start;
 }
 
 .card {
@@ -277,8 +285,15 @@ button.primary-btn:hover {
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .animate-fade {
@@ -290,9 +305,12 @@ button.primary-btn:hover {
     .app-layout {
         grid-template-columns: 1fr;
     }
+
     aside {
-        display: none; /* In a real app we'd have a mobile menu */
+        display: none;
+        /* In a real app we'd have a mobile menu */
     }
+
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
