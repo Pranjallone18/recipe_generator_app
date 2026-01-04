@@ -33,11 +33,16 @@
 
                 <nav>
                     <ul>
-                        <li><a href="#" class="active"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
-                        <li><a href="#"><i data-lucide="wallet"></i> Transactions</a></li>
-                        <li><a href="#"><i data-lucide="pie-chart"></i> Budgets</a></li>
-                        <li><a href="#"><i data-lucide="target"></i> Goals</a></li>
-                        <li><a href="#"><i data-lucide="settings"></i> Settings</a></li>
+                        <li><a href="#" class="active" onclick="showSection('dashboard-section', this)"><i
+                                    data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                        <li><a href="#" onclick="showSection('transactions-section', this)"><i data-lucide="wallet"></i>
+                                Transactions</a></li>
+                        <li><a href="#" onclick="showSection('budgets-section', this)"><i data-lucide="pie-chart"></i>
+                                Budgets</a></li>
+                        <li><a href="#" onclick="showSection('goals-section', this)"><i data-lucide="target"></i>
+                                Goals</a></li>
+                        <li><a href="#" onclick="showSection('settings-section', this)"><i data-lucide="settings"></i>
+                                Settings</a></li>
                     </ul>
                 </nav>
 
@@ -65,138 +70,204 @@
                     </div>
                 </header>
 
-                <!-- Stats Overview -->
-                <div class="stats-grid animate-fade" style="animation-delay: 0.1s;">
-                    <div class="stat-card">
-                        <h3>Total Balance</h3>
-                        <div class="stat-value">₹24,500.80</div>
-                        <div class="stat-change plus">+12% from last month</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Monthly Income</h3>
-                        <div class="stat-value">₹12,000.00</div>
-                        <div class="stat-change text-muted">Stipend & Internship</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Spent</h3>
-                        <div class="stat-value">₹8,400.20</div>
-                        <div class="stat-change minus">-5% under budget</div>
-                    </div>
-                </div>
-
-                <!-- Main Dashboard Grid -->
-                <div class="dashboard-grid">
-                    <!-- Spending Chart -->
-                    <div class="card animate-fade" style="animation-delay: 0.2s;">
-                        <div class="card-header">
-                            <h2 class="card-title">Spending Overview</h2>
-                            <select
-                                style="background: transparent; color: white; border: 1px solid var(--glass-border); border-radius: 8px; padding: 4px 8px;">
-                                <option>Last 7 Days</option>
-                                <option>Last 30 Days</option>
-                            </select>
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="page-section">
+                    <!-- Stats Overview -->
+                    <div class="stats-grid animate-fade" style="padding-top: 1rem;">
+                        <div class="stat-card">
+                            <h3>Total Balance</h3>
+                            <div class="stat-value">₹24,500.80</div>
+                            <div class="stat-change plus">+12% from last month</div>
                         </div>
-                        <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
-                            <canvas id="spendingChart"></canvas>
+                        <div class="stat-card">
+                            <h3>Monthly Income</h3>
+                            <div class="stat-value">₹12,000.00</div>
+                            <div class="stat-change text-muted">Stipend & Internship</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Spent</h3>
+                            <div class="stat-value">₹8,400.20</div>
+                            <div class="stat-change minus">-5% under budget</div>
                         </div>
                     </div>
 
-                    <!-- Recent Transactions -->
-                    <div class="card animate-fade" style="animation-delay: 0.3s;">
+                    <!-- Main Dashboard Grid -->
+                    <div class="dashboard-grid" style="margin-top: 2rem;">
+                        <!-- Spending Chart -->
+                        <div class="card animate-fade">
+                            <div class="card-header">
+                                <h2 class="card-title">Spending Overview</h2>
+                                <select
+                                    style="background: transparent; color: white; border: 1px solid var(--glass-border); border-radius: 8px; padding: 4px 8px;">
+                                    <option>Last 7 Days</option>
+                                    <option>Last 30 Days</option>
+                                </select>
+                            </div>
+                            <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
+                                <canvas id="spendingChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Recent Transactions -->
+                        <div class="card animate-fade">
+                            <div class="card-header">
+                                <h2 class="card-title">Recent Activity</h2>
+                                <a href="#" onclick="showSection('transactions-section')"
+                                    style="color: var(--primary); text-decoration: none; font-size: 0.8rem;">View
+                                    All</a>
+                            </div>
+                            <div class="transaction-list">
+                                <div class="transaction-item">
+                                    <div class="tx-info">
+                                        <div class="tx-icon"
+                                            style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                                            <i data-lucide="coffee"></i>
+                                        </div>
+                                        <div>
+                                            <div class="tx-name">Starbucks Coffee</div>
+                                            <div class="tx-date">Today, 10:24 AM</div>
+                                        </div>
+                                    </div>
+                                    <div class="tx-amount" style="color: var(--danger);">-₹450.50</div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="tx-info">
+                                        <div class="tx-icon"
+                                            style="background: rgba(34, 197, 94, 0.1); color: var(--success);">
+                                            <i data-lucide="arrow-down-left"></i>
+                                        </div>
+                                        <div>
+                                            <div class="tx-name">Freelance Payout</div>
+                                            <div class="tx-date">Yesterday, 4:15 PM</div>
+                                        </div>
+                                    </div>
+                                    <div class="tx-amount" style="color: var(--success);">+₹2,500.00</div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="tx-info">
+                                        <div class="tx-icon"
+                                            style="background: rgba(99, 102, 241, 0.1); color: var(--primary);">
+                                            <i data-lucide="shopping-cart"></i>
+                                        </div>
+                                        <div>
+                                            <div class="tx-name">Amazon - Books</div>
+                                            <div class="tx-date">2 Jan, 2026</div>
+                                        </div>
+                                    </div>
+                                    <div class="tx-amount" style="color: var(--danger);">-₹1,200.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Goals -->
+                    <div class="card animate-fade" style="margin-top: 2rem;">
                         <div class="card-header">
-                            <h2 class="card-title">Recent Activity</h2>
-                            <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.8rem;">View
-                                All</a>
+                            <h2 class="card-title">Budget Categories</h2>
+                        </div>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                            <div class="budget-progress">
+                                <div class="progress-info">
+                                    <span>Food & Drinks</span>
+                                    <span>₹3,000 / ₹5,000</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%;"></div>
+                                </div>
+                            </div>
+                            <div class="budget-progress">
+                                <div class="progress-info">
+                                    <span>Transport</span>
+                                    <span>₹850 / ₹1,000</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%; background: var(--warning);"></div>
+                                </div>
+                            </div>
+                            <div class="budget-progress">
+                                <div class="progress-info">
+                                    <span>Entertainment</span>
+                                    <span>₹1,200 / ₹1,500</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                            <div class="budget-progress">
+                                <div class="progress-info">
+                                    <span>Rent/Hostel</span>
+                                    <span>₹8,000 / ₹8,000</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%; background: var(--success);"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transactions Section -->
+                <section id="transactions-section" class="page-section" style="display: none;">
+                    <div class="card animate-fade">
+                        <div class="card-header">
+                            <h2 class="card-title">Transaction History</h2>
+                            <button class="primary-btn" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Export
+                                History</button>
                         </div>
                         <div class="transaction-list">
-                            <div class="transaction-item">
-                                <div class="tx-info">
-                                    <div class="tx-icon"
-                                        style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
-                                        <i data-lucide="coffee"></i>
-                                    </div>
-                                    <div>
-                                        <div class="tx-name">Starbucks Coffee</div>
-                                        <div class="tx-date">Today, 10:24 AM</div>
-                                    </div>
-                                </div>
-                                <div class="tx-amount" style="color: var(--danger);">-₹450.50</div>
-                            </div>
-                            <div class="transaction-item">
-                                <div class="tx-info">
-                                    <div class="tx-icon"
-                                        style="background: rgba(34, 197, 94, 0.1); color: var(--success);">
-                                        <i data-lucide="arrow-down-left"></i>
-                                    </div>
-                                    <div>
-                                        <div class="tx-name">Freelance Payout</div>
-                                        <div class="tx-date">Yesterday, 4:15 PM</div>
-                                    </div>
-                                </div>
-                                <div class="tx-amount" style="color: var(--success);">+₹2,500.00</div>
-                            </div>
-                            <div class="transaction-item">
-                                <div class="tx-info">
-                                    <div class="tx-icon"
-                                        style="background: rgba(99, 102, 241, 0.1); color: var(--primary);">
-                                        <i data-lucide="shopping-cart"></i>
-                                    </div>
-                                    <div>
-                                        <div class="tx-name">Amazon - Books</div>
-                                        <div class="tx-date">2 Jan, 2026</div>
-                                    </div>
-                                </div>
-                                <div class="tx-amount" style="color: var(--danger);">-₹1,200.00</div>
-                            </div>
+                            <p style="text-align: center; color: var(--text-muted); padding: 3rem;">Detailed transaction
+                                history will appear here. You have 12 transactions this month.</p>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <!-- Budget Goals -->
-                <div class="card animate-fade" style="animation-delay: 0.4s;">
-                    <div class="card-header">
-                        <h2 class="card-title">Budget Categories</h2>
+                <!-- Budgets Section -->
+                <section id="budgets-section" class="page-section" style="display: none;">
+                    <div class="card animate-fade">
+                        <h2 class="card-title" style="margin-bottom: 2rem;">Budget Planner</h2>
+                        <div
+                            style="background: rgba(99, 102, 241, 0.05); border: 2px dashed var(--glass-border); border-radius: 20px; padding: 4rem; text-align: center;">
+                            <i data-lucide="lock"
+                                style="width: 48px; height: 48px; color: var(--primary); margin-bottom: 1rem;"></i>
+                            <h3>Advanced Budgeting Tools</h3>
+                            <p style="color: var(--text-muted); margin-top: 1rem;">Setup automated monthly limits and
+                                category tracking. (Module in development)</p>
+                        </div>
                     </div>
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-                        <div class="budget-progress">
-                            <div class="progress-info">
-                                <span>Food & Drinks</span>
-                                <span>₹3,000 / ₹5,000</span>
+                </section>
+
+                <!-- Goals Section -->
+                <section id="goals-section" class="page-section" style="display: none;">
+                    <div class="card animate-fade">
+                        <h2 class="card-title" style="margin-bottom: 2rem;">Financial Goals</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card" style="border: 1px solid rgba(34, 197, 94, 0.3);">
+                                <h3>New Laptop</h3>
+                                <div class="stat-value">₹45,000 / ₹60,000</div>
+                                <div class="progress-bar" style="margin-top: 1rem;">
+                                    <div class="progress-fill" style="width: 75%; background: var(--success);"></div>
+                                </div>
                             </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 60%;"></div>
-                            </div>
-                        </div>
-                        <div class="budget-progress">
-                            <div class="progress-info">
-                                <span>Transport</span>
-                                <span>₹850 / ₹1,000</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 85%; background: var(--warning);"></div>
-                            </div>
-                        </div>
-                        <div class="budget-progress">
-                            <div class="progress-info">
-                                <span>Entertainment</span>
-                                <span>₹1,200 / ₹1,500</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 80%;"></div>
-                            </div>
-                        </div>
-                        <div class="budget-progress">
-                            <div class="progress-info">
-                                <span>Rent/Hostel</span>
-                                <span>₹8,000 / ₹8,000</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 100%; background: var(--success);"></div>
+                            <div class="stat-card">
+                                <h3>Emergency Fund</h3>
+                                <div class="stat-value">₹10,500 / ₹25,000</div>
+                                <div class="progress-bar" style="margin-top: 1rem;">
+                                    <div class="progress-fill" style="width: 42%;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings-section" class="page-section" style="display: none;">
+                    <div class="card animate-fade">
+                        <h2 class="card-title" style="margin-bottom: 2rem;">Account Settings</h2>
+                        <p style="color: var(--text-muted);">Manage your profile, currency preferences (set to ₹), and
+                            security.</p>
+                    </div>
+                </section>
             </main>
         </div>
     </div>

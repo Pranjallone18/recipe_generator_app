@@ -68,21 +68,39 @@ const spendingChart = new Chart(ctx, {
     }
 });
 
+// Section Switching Logic
+function showSection(sectionId, element) {
+    // Hide all sections
+    document.querySelectorAll('.page-section').forEach(section => {
+        section.style.display = 'none';
+    });
+
+    // Show the target section
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.style.display = 'block';
+    }
+
+    // Update active class in sidebar
+    if (element) {
+        document.querySelectorAll('nav a').forEach(link => {
+            link.classList.remove('active');
+        });
+        element.classList.add('active');
+    }
+
+    // Special case: Re-render Chart if going back to dashboard
+    if (sectionId === 'dashboard-section') {
+        // Chart.js usually handles ResizeObserver well, but we can trigger it if needed
+        window.dispatchEvent(new Event('resize'));
+    }
+}
+
 // Update Date
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric'
-});
-
-// Simple interactivity for the sidebar
-const navLinks = document.querySelectorAll('nav a');
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        navLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-    });
 });
 
 // Function to simulate adding an expense
