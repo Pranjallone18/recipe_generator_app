@@ -300,6 +300,15 @@ button.primary-btn:hover {
     animation: fadeIn 0.5s ease forwards;
 }
 
+.page-section {
+    display: none;
+}
+
+#dashboard-section {
+    display: block;
+    /* Show dashboard by default */
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .app-layout {

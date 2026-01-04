@@ -1,3 +1,37 @@
+// Section Switching Logic
+function showSection(sectionId, element) {
+    console.log("Switching to section:", sectionId);
+
+    // Hide all sections
+    const sections = document.querySelectorAll('.page-section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+        section.classList.remove('animate-fade');
+    });
+
+    // Show the target section
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.style.display = 'block';
+        targetSection.classList.add('animate-fade');
+    } else {
+        console.error("Section not found:", sectionId);
+    }
+
+    // Update active class in sidebar
+    if (element) {
+        document.querySelectorAll('nav a').forEach(link => {
+            link.classList.remove('active');
+        });
+        element.classList.add('active');
+    }
+
+    // Special case: Re-render Chart if going back to dashboard
+    if (sectionId === 'dashboard-section') {
+        window.dispatchEvent(new Event('resize'));
+    }
+}
+
 // Data Management
 let transactions = JSON.parse(localStorage.getItem('budget_transactions')) || [
     { id: 1, name: 'Starbucks Coffee', date: 'Today, 10:24 AM', amount: -450.50, category: 'Food', icon: 'coffee' },
@@ -79,34 +113,6 @@ const spendingChart = new Chart(ctx, {
         }
     }
 });
-
-// Section Switching Logic
-function showSection(sectionId, element) {
-    // Hide all sections
-    document.querySelectorAll('.page-section').forEach(section => {
-        section.style.display = 'none';
-    });
-
-    // Show the target section
-    const targetSection = document.getElementById(sectionId);
-    if (targetSection) {
-        targetSection.style.display = 'block';
-    }
-
-    // Update active class in sidebar
-    if (element) {
-        document.querySelectorAll('nav a').forEach(link => {
-            link.classList.remove('active');
-        });
-        element.classList.add('active');
-    }
-
-    // Special case: Re-render Chart if going back to dashboard
-    if (sectionId === 'dashboard-section') {
-        // Chart.js usually handles ResizeObserver well, but we can trigger it if needed
-        window.dispatchEvent(new Event('resize'));
-    }
-}
 
 // Update Date
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {

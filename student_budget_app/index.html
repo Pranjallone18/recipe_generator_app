@@ -33,15 +33,20 @@
 
                 <nav>
                     <ul>
-                        <li><a href="#" class="active" onclick="showSection('dashboard-section', this)"><i
+                        <li><a href="#" class="active"
+                                onclick="showSection('dashboard-section', this); event.preventDefault();"><i
                                     data-lucide="layout-dashboard"></i> Dashboard</a></li>
-                        <li><a href="#" onclick="showSection('transactions-section', this)"><i data-lucide="wallet"></i>
+                        <li><a href="#" onclick="showSection('transactions-section', this); event.preventDefault();"><i
+                                    data-lucide="wallet"></i>
                                 Transactions</a></li>
-                        <li><a href="#" onclick="showSection('budgets-section', this)"><i data-lucide="pie-chart"></i>
+                        <li><a href="#" onclick="showSection('budgets-section', this); event.preventDefault();"><i
+                                    data-lucide="pie-chart"></i>
                                 Budgets</a></li>
-                        <li><a href="#" onclick="showSection('goals-section', this)"><i data-lucide="target"></i>
+                        <li><a href="#" onclick="showSection('goals-section', this); event.preventDefault();"><i
+                                    data-lucide="target"></i>
                                 Goals</a></li>
-                        <li><a href="#" onclick="showSection('settings-section', this)"><i data-lucide="settings"></i>
+                        <li><a href="#" onclick="showSection('settings-section', this); event.preventDefault();"><i
+                                    data-lucide="settings"></i>
                                 Settings</a></li>
                     </ul>
                 </nav>
