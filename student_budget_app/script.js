@@ -33,25 +33,35 @@ function showSection(sectionId, element) {
 }
 
 // Data Management
-let transactions = JSON.parse(localStorage.getItem('budget_transactions')) || [
+function getInitialData(key, defaultValue) {
+    try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : defaultValue;
+    } catch (e) {
+        console.error(`Error loading ${key}:`, e);
+        return defaultValue;
+    }
+}
+
+let transactions = getInitialData('budget_transactions', [
     { id: 1, name: 'Starbucks Coffee', date: 'Today, 10:24 AM', amount: -450.50, category: 'Food', icon: 'coffee' },
     { id: 2, name: 'Freelance Payout', date: 'Yesterday, 4:15 PM', amount: 2500.00, category: 'Income', icon: 'arrow-down-left' },
     { id: 3, name: 'Amazon - Books', date: '2 Jan, 2026', amount: -1200.00, category: 'Education', icon: 'shopping-cart' }
-];
+]);
 
-let budgetLimits = JSON.parse(localStorage.getItem('budget_limits')) || {
+let budgetLimits = getInitialData('budget_limits', {
     'Food': 5000,
     'Education': 3000,
     'Transport': 1000,
     'Entertainment': 2000,
     'Hostel': 8000,
     'Other': 2000
-};
+});
 
-let financialGoals = JSON.parse(localStorage.getItem('financial_goals')) || [
+let financialGoals = getInitialData('financial_goals', [
     { id: 1, name: 'New Laptop', target: 60000, current: 45000, color: 'var(--success)' },
     { id: 2, name: 'Emergency Fund', target: 25000, current: 10500, color: 'var(--primary)' }
-];
+]);
 
 function saveData() {
     localStorage.setItem('budget_transactions', JSON.stringify(transactions));
@@ -61,74 +71,79 @@ function saveData() {
 }
 
 // Initialize Chart.js
-const ctx = document.getElementById('spendingChart').getContext('2d');
-
-const spendingChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-            label: 'Spending',
-            data: [45, 30, 65, 20, 85, 120, 40],
-            borderColor: '#6366f1',
-            backgroundColor: 'rgba(99, 102, 241, 0.1)',
-            fill: true,
-            tension: 0.4,
-            borderWidth: 3,
-            pointBackgroundColor: '#6366f1',
-            pointBorderColor: '#fff',
-            pointBorderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 6
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
+try {
+    const canvas = document.getElementById('spendingChart');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const spendingChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Spending',
+                    data: [45, 30, 65, 20, 85, 120, 40],
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#6366f1',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
             },
-            tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#f8fafc',
-                bodyColor: '#f8fafc',
-                borderColor: 'rgba(255, 255, 255, 0.1)',
-                borderWidth: 1,
-                padding: 12,
-                displayColors: false,
-                callbacks: {
-                    label: function (context) {
-                        return '₹' + context.parsed.y * 100;
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#f8fafc',
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function (context) {
+                                return '₹' + (context.parsed.y * 100);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#94a3b8',
+                            callback: function (value) {
+                                return '₹' + (value * 100);
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#94a3b8'
+                        }
                     }
                 }
             }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.05)',
-                    drawBorder: false
-                },
-                ticks: {
-                    color: '#94a3b8',
-                    callback: function (value) {
-                        return '₹' + value * 100;
-                    }
-                }
-            },
-            x: {
-                grid: {
-                    display: false
-                },
-                ticks: {
-                    color: '#94a3b8'
-                }
-            }
-        }
+        });
     }
-});
+} catch (e) {
+}
 
 // Update Date
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
@@ -491,4 +506,10 @@ function getAIInsight() {
 }
 
 // Initial Render
-updateUI();
+console.log("BudgetCap: App starting...");
+try {
+    updateUI();
+    console.log("BudgetCap: Initial UI update success.");
+} catch (e) {
+    console.error("BudgetCap: Initial UI update failed:", e);
+}
