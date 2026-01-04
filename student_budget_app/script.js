@@ -239,6 +239,7 @@ function addToGoal(id) {
 }
 
 function addNewGoal() {
+    console.log("Adding new goal - opening modal...");
     toggleGoalModal(true);
 }
 
