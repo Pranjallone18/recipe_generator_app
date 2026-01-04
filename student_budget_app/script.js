@@ -39,8 +39,18 @@ let transactions = JSON.parse(localStorage.getItem('budget_transactions')) || [
     { id: 3, name: 'Amazon - Books', date: '2 Jan, 2026', amount: -1200.00, category: 'Education', icon: 'shopping-cart' }
 ];
 
+let budgetLimits = JSON.parse(localStorage.getItem('budget_limits')) || {
+    'Food': 5000,
+    'Education': 3000,
+    'Transport': 1000,
+    'Entertainment': 2000,
+    'Hostel': 8000,
+    'Other': 2000
+};
+
 function saveData() {
     localStorage.setItem('budget_transactions', JSON.stringify(transactions));
+    localStorage.setItem('budget_limits', JSON.stringify(budgetLimits));
     updateUI();
 }
 
@@ -132,6 +142,7 @@ function updateUI() {
 
     let totalSpent = 0;
     let totalIncome = 0;
+    const categoryTotals = {};
 
     transactions.forEach(tx => {
         const itemHtml = `
@@ -154,7 +165,10 @@ function updateUI() {
         list.insertAdjacentHTML('afterbegin', itemHtml);
         if (fullList) fullList.insertAdjacentHTML('afterbegin', itemHtml);
 
-        if (tx.amount < 0) totalSpent += Math.abs(tx.amount);
+        if (tx.amount < 0) {
+            totalSpent += Math.abs(tx.amount);
+            categoryTotals[tx.category] = (categoryTotals[tx.category] || 0) + Math.abs(tx.amount);
+        }
         else totalIncome += tx.amount;
     });
 
@@ -166,7 +180,79 @@ function updateUI() {
     // Update Health Score
     updateHealthScore(totalSpent, totalIncome);
 
+    // Update Dashboard Progress Bars
+    renderDashboardBudgets(categoryTotals);
+
+    // Update Planner Section
+    renderBudgets(categoryTotals);
+
     lucide.createIcons();
+}
+
+function renderDashboardBudgets(totals) {
+    const dashboardGrid = document.querySelector('#dashboard-section .budget-progress-container');
+    if (!dashboardGrid) return;
+
+    dashboardGrid.innerHTML = '';
+
+    Object.keys(budgetLimits).slice(0, 4).forEach(cat => {
+        const spent = totals[cat] || 0;
+        const limit = budgetLimits[cat];
+        const percent = Math.min(100, (spent / limit) * 100);
+        const color = percent > 90 ? 'var(--danger)' : (percent > 70 ? 'var(--warning)' : 'var(--primary)');
+
+        dashboardGrid.innerHTML += `
+            <div class="budget-progress">
+                <div class="progress-info">
+                    <span>${cat}</span>
+                    <span>₹${spent.toLocaleString()} / ₹${limit.toLocaleString()}</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${percent}%; background: ${color};"></div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function renderBudgets(totals) {
+    const plannerGrid = document.getElementById('budgetPlannerGrid');
+    if (!plannerGrid) return;
+
+    plannerGrid.innerHTML = '';
+
+    Object.keys(budgetLimits).forEach(cat => {
+        const spent = totals[cat] || 0;
+        const limit = budgetLimits[cat];
+        const percent = Math.min(100, (spent / limit) * 100);
+
+        plannerGrid.innerHTML += `
+            <div class="card animate-fade">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <div>
+                        <h3 style="font-size: 1rem; margin-bottom: 4px;">${cat}</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">Monthly Limit</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <input type="number" value="${limit}" onchange="updateLimit('${cat}', this.value)" 
+                            style="width: 80px; padding: 4px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 6px; color: white; text-align: right;">
+                    </div>
+                </div>
+                <div class="progress-bar" style="margin-bottom: 0.5rem;">
+                    <div class="progress-fill" style="width: ${percent}%; background: ${percent > 90 ? 'var(--danger)' : 'var(--primary)'};"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: ${spent > limit ? 'var(--danger)' : 'var(--text-muted)'}">Spent: ₹${spent.toLocaleString()}</span>
+                    <span style="color: var(--text-muted)">Left: ₹${Math.max(0, limit - spent).toLocaleString()}</span>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function updateLimit(category, value) {
+    budgetLimits[category] = parseFloat(value) || 0;
+    saveData();
 }
 
 function updateHealthScore(spent, income) {

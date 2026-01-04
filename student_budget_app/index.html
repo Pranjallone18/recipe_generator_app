@@ -205,44 +205,9 @@
                         <div class="card-header">
                             <h2 class="card-title">Budget Categories</h2>
                         </div>
-                        <div
+                        <div class="budget-progress-container"
                             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-                            <div class="budget-progress">
-                                <div class="progress-info">
-                                    <span>Food & Drinks</span>
-                                    <span>₹3,000 / ₹5,000</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 60%;"></div>
-                                </div>
-                            </div>
-                            <div class="budget-progress">
-                                <div class="progress-info">
-                                    <span>Transport</span>
-                                    <span>₹850 / ₹1,000</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 85%; background: var(--warning);"></div>
-                                </div>
-                            </div>
-                            <div class="budget-progress">
-                                <div class="progress-info">
-                                    <span>Entertainment</span>
-                                    <span>₹1,200 / ₹1,500</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 80%;"></div>
-                                </div>
-                            </div>
-                            <div class="budget-progress">
-                                <div class="progress-info">
-                                    <span>Rent/Hostel</span>
-                                    <span>₹8,000 / ₹8,000</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 100%; background: var(--success);"></div>
-                                </div>
-                            </div>
+                            <!-- Dynamically populated by JS -->
                         </div>
                     </div>
                 </section>
@@ -285,14 +250,14 @@
                 <!-- Budgets Section -->
                 <section id="budgets-section" class="page-section" style="display: none;">
                     <div class="card animate-fade">
-                        <h2 class="card-title" style="margin-bottom: 2rem;">Budget Planner</h2>
-                        <div
-                            style="background: rgba(99, 102, 241, 0.05); border: 2px dashed var(--glass-border); border-radius: 20px; padding: 4rem; text-align: center;">
-                            <i data-lucide="lock"
-                                style="width: 48px; height: 48px; color: var(--primary); margin-bottom: 1rem;"></i>
-                            <h3>Advanced Budgeting Tools</h3>
-                            <p style="color: var(--text-muted); margin-top: 1rem;">Setup automated monthly limits and
-                                category tracking. (Module in development)</p>
+                        <div class="card-header">
+                            <h2 class="card-title">Budget Planner</h2>
+                            <p style="color: var(--text-muted); font-size: 0.8rem;">Tap on limits to edit your monthly
+                                goals.</p>
+                        </div>
+                        <div id="budgetPlannerGrid"
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                            <!-- Dynamically populated by JS -->
                         </div>
                     </div>
                 </section>
