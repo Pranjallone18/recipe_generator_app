@@ -1,0 +1,42 @@
+[
+    {
+        "id": 101,
+        "name": "Monthly Stipend",
+        "date": "01 Jan, 2026",
+        "amount": 15000.00,
+        "category": "Income",
+        "icon": "arrow-down-left"
+    },
+    {
+        "id": 102,
+        "name": "Rent Deposit",
+        "date": "02 Jan, 2026",
+        "amount": -8000.00,
+        "category": "Hostel",
+        "icon": "home"
+    },
+    {
+        "id": 103,
+        "name": "Semester Books",
+        "date": "03 Jan, 2026",
+        "amount": -2400.00,
+        "category": "Education",
+        "icon": "book"
+    },
+    {
+        "id": 104,
+        "name": "College Canteen",
+        "date": "04 Jan, 2026",
+        "amount": -150.00,
+        "category": "Food",
+        "icon": "coffee"
+    },
+    {
+        "id": 105,
+        "name": "Bus Pass",
+        "date": "05 Jan, 2026",
+        "amount": -500.00,
+        "category": "Transport",
+        "icon": "bus"
+    }
+]
