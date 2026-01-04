@@ -324,8 +324,23 @@
                 <section id="settings-section" class="page-section" style="display: none;">
                     <div class="card animate-fade">
                         <h2 class="card-title" style="margin-bottom: 2rem;">Account Settings</h2>
-                        <p style="color: var(--text-muted);">Manage your profile, currency preferences (set to ₹), and
-                            security.</p>
+                        <div
+                            style="padding-bottom: 2rem; border-bottom: 1px solid var(--glass-border); margin-bottom: 2rem;">
+                            <p style="color: var(--text-muted); margin-bottom: 1rem;">Manage your profile, currency
+                                preferences (set to ₹), and
+                                security.</p>
+                            <button class="primary-btn"
+                                style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--glass-border);">Update
+                                Profile</button>
+                        </div>
+
+                        <div>
+                            <h3 style="color: var(--danger); margin-bottom: 1rem;">Danger Zone</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Delete all
+                                transactions and reset the app to its default state. This action cannot be undone.</p>
+                            <button class="primary-btn" onclick="resetApp()" style="background: var(--danger);">Reset
+                                Data & Start Over</button>
+                        </div>
                     </div>
                 </section>
             </main>

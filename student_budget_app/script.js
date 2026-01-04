@@ -223,41 +223,54 @@ function handleFormSubmit(event) {
 
 // Import/Export Logic
 function exportData(format = 'json') {
-    let content, fileName, mimeType;
+    console.log("Export triggered:", format);
+    try {
+        let content, fileName, mimeType;
 
-    if (format === 'csv') {
-        // Simple CSV conversion with UTF-8 BOM for Excel compatibility
-        const headers = ['ID', 'Name', 'Date', 'Amount', 'Category'];
-        const rows = transactions.map(tx => [
-            tx.id,
-            `"${tx.name}"`,
-            tx.date,
-            tx.amount,
-            tx.category
-        ].join(','));
-        content = "\uFEFF" + [headers.join(','), ...rows].join('\n');
-        fileName = 'budget_history.csv';
-        mimeType = 'text/csv;charset=utf-8';
-    } else {
-        content = JSON.stringify(transactions, null, 2);
-        fileName = 'budget_data.json';
-        mimeType = 'application/json;charset=utf-8';
+        if (format === 'csv') {
+            const headers = ['ID', 'Name', 'Date', 'Amount', 'Category'];
+            const rows = transactions.map(tx => [
+                tx.id,
+                `"${(tx.name || '').replace(/"/g, '""')}"`,
+                tx.date,
+                tx.amount,
+                tx.category
+            ].join(','));
+            content = "\uFEFF" + [headers.join(','), ...rows].join('\n');
+            fileName = 'budget_history.csv';
+            mimeType = 'text/csv;charset=utf-8';
+        } else {
+            content = JSON.stringify(transactions, null, 2);
+            fileName = 'budget_data.json';
+            mimeType = 'application/json;charset=utf-8';
+        }
+
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = fileName;
+
+        document.body.appendChild(link);
+        link.click();
+
+        setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            console.log("Download cleanup done.");
+        }, 500);
+    } catch (err) {
+        console.error("Export Error:", err);
+        alert("Export failed. Check browser console.");
     }
+}
 
-    const blob = new Blob([content], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-
-    link.href = url;
-    link.download = fileName;
-
-    document.body.appendChild(link);
-    link.click();
-
-    setTimeout(() => {
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    }, 100);
+function resetApp() {
+    if (confirm("Reset current data? This will bring back the default setup.")) {
+        localStorage.removeItem('budget_transactions');
+        location.reload();
+    }
 }
 
 function handleImport(input) {
