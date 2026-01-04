@@ -222,14 +222,40 @@ function handleFormSubmit(event) {
 }
 
 // Import/Export Logic
-function exportData() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(transactions));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "budget_data.json");
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+function exportData(format = 'json') {
+    let content, fileName, mimeType;
+
+    if (format === 'csv') {
+        // Simple CSV conversion
+        const headers = ['ID', 'Name', 'Date', 'Amount', 'Category'];
+        const rows = transactions.map(tx => [
+            tx.id,
+            `"${tx.name}"`,
+            tx.date,
+            tx.amount,
+            tx.category
+        ].join(','));
+        content = [headers.join(','), ...rows].join('\n');
+        fileName = 'budget_history.csv';
+        mimeType = 'text/csv;charset=utf-8;';
+    } else {
+        content = JSON.stringify(transactions, null, 2);
+        fileName = 'budget_data.json';
+        mimeType = 'application/json;charset=utf-8;';
+    }
+
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 }
 
 function handleImport(input) {

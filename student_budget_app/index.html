@@ -261,11 +261,17 @@
                                         style="width: 14px; height: 14px; display: inline; vertical-align: middle; margin-right: 4px;"></i>
                                     Import
                                 </button>
-                                <button class="primary-btn" onclick="exportData()"
+                                <button class="primary-btn" onclick="exportData('csv')"
                                     style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                    <i data-lucide="file-text"
+                                        style="width: 14px; height: 14px; display: inline; vertical-align: middle; margin-right: 4px;"></i>
+                                    Export History (CSV)
+                                </button>
+                                <button class="primary-btn" onclick="exportData('json')"
+                                    style="padding: 0.5rem 1rem; font-size: 0.8rem; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--glass-border);">
                                     <i data-lucide="download"
                                         style="width: 14px; height: 14px; display: inline; vertical-align: middle; margin-right: 4px;"></i>
-                                    Export
+                                    JSON Backup
                                 </button>
                             </div>
                         </div>
