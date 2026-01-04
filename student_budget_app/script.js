@@ -226,7 +226,7 @@ function exportData(format = 'json') {
     let content, fileName, mimeType;
 
     if (format === 'csv') {
-        // Simple CSV conversion
+        // Simple CSV conversion with UTF-8 BOM for Excel compatibility
         const headers = ['ID', 'Name', 'Date', 'Amount', 'Category'];
         const rows = transactions.map(tx => [
             tx.id,
@@ -235,27 +235,29 @@ function exportData(format = 'json') {
             tx.amount,
             tx.category
         ].join(','));
-        content = [headers.join(','), ...rows].join('\n');
+        content = "\uFEFF" + [headers.join(','), ...rows].join('\n');
         fileName = 'budget_history.csv';
-        mimeType = 'text/csv;charset=utf-8;';
+        mimeType = 'text/csv;charset=utf-8';
     } else {
         content = JSON.stringify(transactions, null, 2);
         fileName = 'budget_data.json';
-        mimeType = 'application/json;charset=utf-8;';
+        mimeType = 'application/json;charset=utf-8';
     }
 
     const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
 
-    link.setAttribute('href', url);
-    link.setAttribute('download', fileName);
-    link.style.visibility = 'hidden';
+    link.href = url;
+    link.download = fileName;
 
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+
+    setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }, 100);
 }
 
 function handleImport(input) {
