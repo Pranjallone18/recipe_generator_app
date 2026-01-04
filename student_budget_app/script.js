@@ -182,21 +182,83 @@ function updateHealthScore(spent, income) {
     }
 }
 
-// Function to simulate adding an expense
-document.querySelector('.primary-btn').addEventListener('click', () => {
-    const name = prompt("What did you spend on?");
-    const amount = prompt("Enter amount (₹):");
+// Modal Logic
+function toggleModal(show) {
+    const modal = document.getElementById('expenseModal');
+    modal.style.display = show ? 'flex' : 'none';
+    if (show) {
+        document.getElementById('itemName').focus();
+    }
+}
 
-    if (name && amount && !isNaN(amount)) {
+function handleFormSubmit(event) {
+    event.preventDefault();
+    const name = document.getElementById('itemName').value;
+    const amount = document.getElementById('itemAmount').value;
+    const category = document.getElementById('itemCategory').value;
+
+    const icons = {
+        'Food': 'coffee',
+        'Education': 'book',
+        'Transport': 'bus',
+        'Entertainment': 'tv',
+        'Hostel': 'home',
+        'Other': 'shopping-bag'
+    };
+
+    if (name && amount) {
         transactions.push({
             id: Date.now(),
             name: name,
             date: 'Just now',
             amount: -parseFloat(amount),
-            category: 'Other',
-            icon: 'shopping-bag'
+            category: category,
+            icon: icons[category] || 'shopping-bag'
         });
         saveData();
+        toggleModal(false);
+        event.target.reset();
+    }
+}
+
+// Import/Export Logic
+function exportData() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(transactions));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "budget_data.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+function handleImport(input) {
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            if (Array.isArray(importedData)) {
+                transactions = importedData;
+                saveData();
+                alert("Successfully imported " + transactions.length + " transactions!");
+            }
+        } catch (err) {
+            alert("Error: Invalid JSON file format.");
+        }
+    };
+
+    if (file) {
+        reader.readAsText(file);
+    }
+}
+
+// Function to open modal (replacing prompt)
+document.querySelector('.primary-btn').addEventListener('click', (e) => {
+    // Check if it's the main sidebar button
+    if (e.target.closest('aside')) {
+        toggleModal(true);
     }
 });
 
@@ -205,8 +267,8 @@ function getAIInsight() {
     const insights = [
         "You've spent 15% more on Coffee than last week. Consider home brewing!",
         "Your savings are on track for the 'New Laptop' goal. Keep it up!",
-        "Student discount alert: Apple Musics is available for ₹59/month for you.",
-        "Pro Tip: Buying groceries in bulk could save you ₹1200 this month."
+        "Student discount alert: Apple Music is available for ₹59/month for you.",
+        "Pro Tip: Buying groceries in bulk could save you ₹1,200 this month."
     ];
     alert("🤖 AI Insight: " + insights[Math.floor(Math.random() * insights.length)]);
 }
