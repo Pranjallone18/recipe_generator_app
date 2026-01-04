@@ -37,7 +37,7 @@ const spendingChart = new Chart(ctx, {
                 displayColors: false,
                 callbacks: {
                     label: function (context) {
-                        return '$' + context.parsed.y;
+                        return '₹' + context.parsed.y * 100;
                     }
                 }
             }
@@ -52,7 +52,7 @@ const spendingChart = new Chart(ctx, {
                 ticks: {
                     color: '#94a3b8',
                     callback: function (value) {
-                        return '$' + value;
+                        return '₹' + value * 100;
                     }
                 }
             },
@@ -87,8 +87,8 @@ navLinks.forEach(link => {
 
 // Function to simulate adding an expense
 document.querySelector('.primary-btn').addEventListener('click', () => {
-    const amount = prompt("Enter expense amount:");
+    const amount = prompt("Enter expense amount (₹):");
     if (amount && !isNaN(amount)) {
-        alert(`Successfully added an expense of $${amount}! (Simulation)`);
+        alert(`Successfully added an expense of ₹${amount}! (Simulation)`);
     }
 });

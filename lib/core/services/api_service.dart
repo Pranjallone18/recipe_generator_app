@@ -4,7 +4,7 @@ import '../models/recipe.dart';
 
 class ApiService {
   // IMPORTANT: Replace with your actual Gemini API Key from https://aistudio.google.com/
-  static const String _apiKey = 'AIzaSyBnwkM5IM98kzJIru0nK_b3BBzaUFQs7ME';
+  static const String _apiKey = 'AIzaSyAU4J8_iW8OjFgdLOEahrK4pRS4RPLmTo0';
   
   // Direct HTTP Endpoint for Gemini Pro (Stable)
   static const String _baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
